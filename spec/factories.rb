@@ -36,4 +36,8 @@ FactoryBot.define do
     higher_is_better { true }
     unit
   end
+
+  factory :ranking do
+    association :target, factory: :outcome
+  end
 end
