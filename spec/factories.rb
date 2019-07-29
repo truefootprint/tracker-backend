@@ -7,4 +7,9 @@ FactoryBot.define do
     sequence(:name) { |n| "Company #{n}" }
     sector
   end
+
+  factory :question do
+    sequence(:gri_code) { |n| "GRI 100-#{n}" }
+    sequence(:text) { |n| "What is the answer to question #{n}?" }
+  end
 end
