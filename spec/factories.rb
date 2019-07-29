@@ -25,4 +25,10 @@ FactoryBot.define do
   factory :unit do
     sequence(:name) { |n| "Unit #{n}" }
   end
+
+  factory :identifier do
+    association :target, factory: :question
+    name { :gri_code }
+    value { "GRI 123-1" }
+  end
 end
