@@ -58,11 +58,23 @@ RSpec.describe Answer do
       answer.question = existing.question
       answer.company = existing.company
       answer.year = existing.year
+      answer.unit = existing.unit
 
       expect(answer).to be_invalid
 
       answer.year += 1
       expect(answer).to be_valid
+    end
+
+    it "requires a unit" do
+      answer.unit = nil
+      expect(answer).to be_invalid
+    end
+
+    # TODO: make this more flexible so we can convert between units
+    it "requires a unit that matches the question's unit" do
+      answer.unit = FactoryBot.build(:unit)
+      expect(answer).to be_invalid
     end
   end
 end

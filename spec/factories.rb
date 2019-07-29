@@ -11,6 +11,7 @@ FactoryBot.define do
   factory :question do
     sequence(:gri_code) { |n| "GRI 100-#{n}" }
     sequence(:text) { |n| "What is the answer to question #{n}?" }
+    unit
   end
 
   factory :answer do
@@ -18,6 +19,10 @@ FactoryBot.define do
     company
     year { Time.now.year }
     value { 123 }
-    #unit
+    unit { question.unit }
+  end
+
+  factory :unit do
+    sequence(:name) { |n| "Unit #{n}" }
   end
 end
