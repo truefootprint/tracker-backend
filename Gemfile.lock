@@ -48,6 +48,11 @@ GEM
     crass (1.0.4)
     diff-lcs (1.3)
     erubi (1.8.0)
+    factory_bot (5.0.2)
+      activesupport (>= 4.2.0)
+    factory_bot_rails (5.0.2)
+      factory_bot (~> 5.0.2)
+      railties (>= 4.2.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.6.0)
@@ -139,6 +144,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  factory_bot_rails (~> 5.0)
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 5.2.3)
