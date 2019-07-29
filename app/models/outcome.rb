@@ -6,5 +6,4 @@ class Outcome < ApplicationRecord
     uniqueness: { case_sensitive: false }
 
   validates :higher_is_better, presence: true
-  validates :unit, presence: true
 end

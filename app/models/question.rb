@@ -4,6 +4,4 @@ class Question < ApplicationRecord
   validates :text,
     presence: true,
     uniqueness: { case_sensitive: false }
-
-  validates :unit, presence: true
 end
