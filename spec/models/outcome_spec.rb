@@ -14,6 +14,9 @@ RSpec.describe Outcome do
     it "requires the higher_is_better boolean" do
       outcome.higher_is_better = nil
       expect(outcome).to be_invalid
+
+      outcome.higher_is_better = false
+      expect(outcome).to be_valid
     end
 
     it "requires a unit" do

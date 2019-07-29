@@ -5,5 +5,5 @@ class Outcome < ApplicationRecord
     presence: true,
     uniqueness: { case_sensitive: false }
 
-  validates :higher_is_better, presence: true
+  validates :higher_is_better, inclusion: [true, false]
 end
