@@ -40,4 +40,9 @@ FactoryBot.define do
   factory :ranking do
     association :target, factory: :outcome
   end
+
+  factory :mapping do
+    outcome
+    question
+  end
 end
