@@ -9,7 +9,6 @@ FactoryBot.define do
   end
 
   factory :question do
-    sequence(:gri_code) { |n| "GRI 100-#{n}" }
     sequence(:text) { |n| "What is the answer to question #{n}?" }
     unit
   end

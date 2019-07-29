@@ -6,18 +6,6 @@ RSpec.describe Question do
       expect(question).to be_valid
     end
 
-    it "requires a gri_code" do
-      question.gri_code = " "
-      expect(question).to be_invalid
-    end
-
-    it "requires a unique gri_code" do
-      FactoryBot.create(:question, gri_code: "GRI 305-1")
-
-      question.gri_code = " "
-      expect(question).to be_invalid
-    end
-
     it "requires text" do
       question.text = " "
       expect(question).to be_invalid
