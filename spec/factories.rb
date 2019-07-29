@@ -30,4 +30,10 @@ FactoryBot.define do
     name { :gri_code }
     value { "GRI 123-1" }
   end
+
+  factory :outcome do
+    sequence(:name) { |n| "Outcome #{n}" }
+    higher_is_better { true }
+    unit
+  end
 end

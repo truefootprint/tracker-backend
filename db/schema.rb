@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_29_142454) do
+ActiveRecord::Schema.define(version: 2019_07_29_142737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,16 @@ ActiveRecord::Schema.define(version: 2019_07_29_142454) do
     t.datetime "updated_at", null: false
     t.index ["target_type", "target_id", "name"], name: "index_identifiers_on_target_type_and_target_id_and_name", unique: true
     t.index ["target_type", "target_id"], name: "index_identifiers_on_target_type_and_target_id"
+  end
+
+  create_table "outcomes", force: :cascade do |t|
+    t.text "name"
+    t.boolean "higher_is_better", null: false
+    t.bigint "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_outcomes_on_name", unique: true
+    t.index ["unit_id"], name: "index_outcomes_on_unit_id"
   end
 
   create_table "questions", force: :cascade do |t|
