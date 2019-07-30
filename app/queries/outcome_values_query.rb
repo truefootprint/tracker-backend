@@ -1,8 +1,22 @@
 class OutcomeValuesQuery
   attr_accessor :scope
 
-  def initialize
-    self.scope = Outcome
+  def initialize(ordered: false)
+    self.scope = ordered ? order(outcome_values) : outcome_values
+  end
+
+  def to_sql
+    scope.to_sql
+  end
+
+  def results
+    ActiveRecord::Base.connection.execute(scope.to_sql).to_a.map(&:symbolize_keys)
+  end
+
+  private
+
+  def outcome_values
+    Outcome
       .select("outcomes.id as outcome_id")
       .select("a1.year")
       .select("a1.company_id as company_id")
@@ -17,11 +31,14 @@ class OutcomeValuesQuery
       .where("c1.id = c2.id AND a1.year = a2.year OR c2.id IS NULL")
   end
 
-  def to_sql
-    scope.to_sql
+  def order(scope)
+    Outcome
+      .select("x.*")
+      .joins("INNER JOIN (#{scope.to_sql}) x ON x.outcome_id = outcomes.id")
+      .order(:outcome_id, :year, order_by_higher_is_better)
   end
 
-  def results
-    ActiveRecord::Base.connection.execute(scope.to_sql).to_a.map(&:symbolize_keys)
+  def order_by_higher_is_better
+    Arel.sql("CASE WHEN higher_is_better THEN -value ELSE value END")
   end
 end
