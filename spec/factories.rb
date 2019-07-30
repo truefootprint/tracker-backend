@@ -33,7 +33,7 @@ FactoryBot.define do
 
   factory :outcome do
     sequence(:name) { |n| "Outcome #{n}" }
-    higher_is_better { true }
+    higher_is_better { false }
     unit
   end
 

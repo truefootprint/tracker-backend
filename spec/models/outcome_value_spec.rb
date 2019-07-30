@@ -42,7 +42,8 @@ RSpec.describe OutcomeValue do
   end
 
   it "is readonly because it is backed by a materialized view" do
-    expect { OutcomeValue.create! }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    expect { OutcomeValue.create!(outcome: outcome_1, company: company_1) }
+      .to raise_error(ActiveRecord::ReadOnlyRecord)
   end
 
   it "must be manually refreshed before changes can be seen" do
