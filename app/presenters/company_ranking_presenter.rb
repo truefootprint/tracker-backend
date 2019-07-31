@@ -16,14 +16,24 @@ class CompanyRankingPresenter
   end
 
   def ranked_companies
-    companies.zip(ranks_and_values).map { |c, r| c.merge(r) }
+    companies.zip(values, ranks, bands).map { |arr| arr.inject(:merge) }
   end
 
   def companies
     company_ranking.map { |c| CompanyPresenter.new(c).as_json }
   end
 
-  def ranks_and_values
-    company_ranking.map { |c| { rank: c.rank, value: c.value } }
+  def values
+    company_ranking.map { |c| { value: c.value } }
+  end
+
+  def ranks
+    company_ranking.map { |c| { rank: c.rank } }
+  end
+
+  def bands
+    company_ranking.map do |company|
+      { band: Banding.new.band(company.rank, company_ranking.count) }
+    end
   end
 end
