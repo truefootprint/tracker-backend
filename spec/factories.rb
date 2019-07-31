@@ -41,4 +41,13 @@ FactoryBot.define do
     outcome
     question
   end
+
+  factory :group do
+    sequence(:name) { |n| "Group #{n}" }
+  end
+
+  factory :group_member do
+    group
+    association :member, factory: :outcome
+  end
 end

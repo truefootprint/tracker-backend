@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_171229) do
+ActiveRecord::Schema.define(version: 2019_07_31_140449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,24 @@ ActiveRecord::Schema.define(version: 2019_07_30_171229) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_companies_on_name", unique: true
     t.index ["sector_id"], name: "index_companies_on_sector_id"
+  end
+
+  create_table "group_members", force: :cascade do |t|
+    t.bigint "group_id"
+    t.string "member_type"
+    t.bigint "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "member_type", "member_id"], name: "index_group_members_on_group_id_and_member_type_and_member_id", unique: true
+    t.index ["group_id"], name: "index_group_members_on_group_id"
+    t.index ["member_type", "member_id"], name: "index_group_members_on_member_type_and_member_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_groups_on_name", unique: true
   end
 
   create_table "identifiers", force: :cascade do |t|
