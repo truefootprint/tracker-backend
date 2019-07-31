@@ -1,4 +1,4 @@
-class Rankingx
+class Ranking
   include Enumerable
 
   attr_accessor :scope

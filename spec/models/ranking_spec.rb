@@ -1,4 +1,4 @@
-RSpec.describe Rankingx do
+RSpec.describe Ranking do
   before do
     sector_123 = FactoryBot.create(:sector, id: 123)
     sector_456 = FactoryBot.create(:sector, id: 456)

@@ -6,7 +6,7 @@ class CompanyRanking
   def initialize(outcome, year)
     self.outcome = outcome
     self.year = year
-    self.ranking = Rankingx.new(companies, order)
+    self.ranking = Ranking.new(companies, order)
   end
 
   def each(&block)
