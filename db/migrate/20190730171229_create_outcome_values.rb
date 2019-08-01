@@ -19,7 +19,7 @@ class CreateOutcomeValues < ActiveRecord::Migration[5.2]
         left join answers a2 on a2.question_id = q2.id
         left join companies c2 on a2.company_id = c2.id
 
-        where c1.id = c2.id and a1.year = a2.year
+        where c1.id = c2.id and a1.year = a2.year and a2.value != 0
         or c2.id is null
       ) with data
     SQL

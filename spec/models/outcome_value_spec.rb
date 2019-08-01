@@ -41,6 +41,13 @@ RSpec.describe OutcomeValue do
     )
   end
 
+  it "does not add rows for divisions by zero" do
+    Answer.last.update!(value: 0)
+    OutcomeValue.refresh
+
+    expect(OutcomeValue.count).to eq(7)
+  end
+
   it "is readonly because it is backed by a materialized view" do
     expect { OutcomeValue.create!(outcome: outcome_1, company: company_1) }
       .to raise_error(ActiveRecord::ReadOnlyRecord)
