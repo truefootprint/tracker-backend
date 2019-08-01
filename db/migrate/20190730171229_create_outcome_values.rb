@@ -23,9 +23,17 @@ class CreateOutcomeValues < ActiveRecord::Migration[5.2]
         or c2.id is null
       ) with data
     SQL
+
+    add_index :outcome_values, :outcome_id
+    add_index :outcome_values, :company_id
+    add_index :outcome_values, :year
   end
 
   def down
+    remove_index :outcome_values, :outcome_id
+    remove_index :outcome_values, :company_id
+    remove_index :outcome_values, :year
+
     execute("drop materialized view if exists outcome_values")
   end
 end
