@@ -8,7 +8,7 @@ class CompanyRankingsController < ApplicationController
   def show
     rankable = rankable_class.find(rankable_id)
     company_rankings = CompanyRanking.where(rankable: rankable, year: year)
-    presenter = CompanyRankingPresenter.new(company_rankings)
+    presenter = CompanyRankingsPresenter.new(company_rankings)
 
     render json: presenter
   end

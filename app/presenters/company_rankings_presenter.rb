@@ -1,4 +1,4 @@
-class CompanyRankingPresenter
+class CompanyRankingsPresenter
   attr_accessor :company_rankings, :rankable
 
   def initialize(company_rankings)
