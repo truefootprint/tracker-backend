@@ -1,8 +1,8 @@
 class CompanyRankingPresenter
-  attr_accessor :company_ranking
+  attr_accessor :company_rankings, :rankable
 
-  def initialize(company_ranking)
-    self.company_ranking = company_ranking
+  def initialize(company_rankings)
+    self.company_rankings = company_rankings
   end
 
   def as_json(_options = {})
@@ -12,7 +12,7 @@ class CompanyRankingPresenter
   private
 
   def outcome
-    OutcomePresenter.new(company_ranking.outcome)
+    OutcomePresenter.new(company_rankings.first.rankable)
   end
 
   def ranked_companies
@@ -20,20 +20,20 @@ class CompanyRankingPresenter
   end
 
   def companies
-    company_ranking.map { |c| CompanyPresenter.new(c).as_json }
+    company_rankings.map { |c| CompanyPresenter.new(c.company).as_json }
   end
 
   def values
-    company_ranking.map { |c| { value: c.value } }
+    company_rankings.map { |c| { value: c.value } }
   end
 
   def ranks
-    company_ranking.map { |c| { rank: c.rank } }
+    company_rankings.map { |c| { rank: c.rank } }
   end
 
   def bands
-    company_ranking.map do |company|
-      { band: Banding.new.band(company.rank, company_ranking.count) }
+    company_rankings.map do |company|
+      { band: Banding.new.band(company.rank, company_rankings.count) }
     end
   end
 end
