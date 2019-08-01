@@ -6,13 +6,13 @@ class CompanyRankingsPresenter
   end
 
   def as_json(_options = {})
-    { outcome: outcome, ranked_companies: ranked_companies }
+    { name: rankable.name, ranked_companies: ranked_companies }
   end
 
   private
 
-  def outcome
-    OutcomePresenter.new(company_rankings.first.rankable)
+  def rankable
+    company_rankings.first.rankable
   end
 
   def ranked_companies
