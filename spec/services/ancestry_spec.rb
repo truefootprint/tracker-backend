@@ -68,4 +68,28 @@ RSpec.describe Ancestry do
       ] },
     ]
   end
+
+  it "keeps track of which members have been seen" do
+    expect(ancestry.seen).to match_array [
+      { type: "Group", id: f.id },
+    ]
+
+    ancestry.parents
+    expect(ancestry.seen).to match_array [
+      { type: "Group", id: d.id },
+      { type: "Group", id: e.id },
+      { type: "Group", id: f.id },
+    ]
+
+    ancestry.descendents
+    expect(ancestry.seen).to match_array [
+      { type: "Group", id: d.id },
+      { type: "Group", id: e.id },
+      { type: "Group", id: f.id },
+      { type: "Group", id: g.id },
+      { type: "Group", id: h.id },
+      { type: "Outcome", id: i.id },
+      { type: "Outcome", id: j.id },
+    ]
+  end
 end

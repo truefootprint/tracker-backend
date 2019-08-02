@@ -1,38 +1,31 @@
 class Ancestry
-  attr_accessor :member, :child_to_parents, :parent_to_children
+  attr_accessor :member, :seen
 
   def initialize(member)
     self.member = member
+    self.seen = Set[member_key]
   end
 
   def parents(child = member_key)
-    child_to_parents[child].map do |parent|
-      { type: parent[0], id: parent[1] }
-    end
+    child_to_parents[child].each { |p| seen << p }
   end
 
   def ancestors(child = member_key)
-    child_to_parents[child].map do |parent|
-      { type: parent[0], id: parent[1], ancestors: ancestors(parent) }
-    end
+    parents(child).map { |p| p.merge(ancestors: ancestors(p)) }
   end
 
   def children(parent = member_key)
-    parent_to_children[parent].map do |child|
-      { type: child[0], id: child[1] }
-    end
+    parent_to_children[parent].each { |c| seen << c }
   end
 
   def descendents(parent = member_key)
-    parent_to_children[parent].map do |child|
-      { type: child[0], id: child[1], descendents: descendents(child) }
-    end
+    children(parent).map { |p| p.merge(descendents: descendents(p)) }
   end
 
   private
 
   def member_key
-    [member.class.name, member.id]
+    { type: member.class.name, id: member.id }
   end
 
   def child_to_parents
@@ -41,8 +34,8 @@ class Ancestry
       array_default = Hash.new { |k, v| k[v] = [] }
 
       results.each.with_object(array_default) do |result, parents|
-        child = result.values_at(:child_type, :child_id)
-        parent = result.values_at(:parent_type, :parent_id)
+        child = { type: result[:child_type], id: result[:child_id] }
+        parent = { type: result[:parent_type], id: result[:parent_id] }
 
         parents[child] << parent
       end
@@ -55,8 +48,8 @@ class Ancestry
       array_default = Hash.new { |k, v| k[v] = [] }
 
       results.each.with_object(array_default) do |result, children|
-        parent = result.values_at(:parent_type, :parent_id)
-        child = result.values_at(:child_type, :child_id)
+        parent = { type: result[:parent_type], id: result[:parent_id] }
+        child = { type: result[:child_type], id: result[:child_id] }
 
         children[parent] << child
       end
