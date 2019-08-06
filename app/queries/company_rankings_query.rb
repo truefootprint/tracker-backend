@@ -32,8 +32,8 @@ class CompanyRankingsQuery
 
         from (
           select distinct group_id, company_id, sector_id, year,
-            avg(r.rank)    over(partition by group_id, company_id, sector_id, year) as avg_rank,
-            count(r.value) over(partition by group_id, company_id, sector_id, year) as count
+            avg(r.rank)   over(partition by group_id, company_id, sector_id, year) as avg_rank,
+            count(r.rank) over(partition by group_id, company_id, sector_id, year) as count
 
           from groups g
           join group_members gm on gm.group_id = g.id
