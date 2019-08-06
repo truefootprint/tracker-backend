@@ -1,6 +1,10 @@
 class AncestryController < ApplicationController
   TYPES = %w[outcome group].freeze
 
+  before_action do # TODO: add the rack-cors gem?
+    headers['Access-Control-Allow-Origin'] = '*'
+  end
+
   def show
     render json: AncestryPresenter.new(ancestry, AncestryPresenter::ALL)
   end
