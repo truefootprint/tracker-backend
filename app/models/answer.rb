@@ -10,7 +10,7 @@ class Answer < ApplicationRecord
     presence: true,
     uniqueness: { scope: [:question, :company, :year] }
 
-  validate :unit_matches_question
+  #validate :unit_matches_question
 
   private
 

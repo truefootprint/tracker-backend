@@ -30,24 +30,37 @@ class Importer
       GroupMember.create(group: esg, member: group)
     end
 
-    question_texts.zip(esg_names, gri_codes, unit_names, higher_is_better).each do |text, esg_name, code, name, higher|
+    question_texts.zip(ratio_mappings, esg_names, gri_codes, unit_names, higher_is_better)
+      .each do |text, ratio, esg_name, code, name, higher|
+
       unit = Unit.find_or_create_by!(name: name)
       group = Group.find_by!(name: esg_name) unless esg_name == "-"
 
-      question = Question.create!(text: text, unit: unit)
+      if ratio
+        question_text, divisor_text = ratio
+
+        question = Question.find_by!(text: question_text)
+        divisor = Question.find_by!(text: divisor_text)
+      else
+        question = Question.create!(text: text, unit: unit)
+        divisor = nil
+      end
+
       outcome = Outcome.create!(name: text, unit: unit, higher_is_better: higher)
 
-      Mapping.create!(question: question, outcome: outcome)
+      Mapping.create!(question: question, divisor: divisor, outcome: outcome)
       GroupMember.create!(group: group, member: outcome) if group
 
       if code.present?
         code = code.split(",").first
 
-        Identifier.create(name: "gri_code", value: code, target: question)
-        Identifier.create(name: "gri_code", value: code, target: outcome)
+        #Identifier.create(name: "gri_code", value: code, target: question)
+        #Identifier.create(name: "gri_code", value: code, target: outcome)
       end
 
       mining.companies.each do |company|
+        next if ratio
+
         answer = answer_for(company.name, question.text)
         next if answer.blank?
 
@@ -101,6 +114,12 @@ class Importer
 
   def auditor_names
     cols[2][70..].take_while(&:present?)
+  end
+
+  def ratio_mappings
+    cols[0][4..].map do |ratio|
+      ratio.split("/").map { |row| question_texts[row.to_i - 5] } unless ratio.blank?
+    end
   end
 
   def esg_names

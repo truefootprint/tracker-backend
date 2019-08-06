@@ -72,9 +72,9 @@ RSpec.describe Answer do
     end
 
     # TODO: make this more flexible so we can convert between units
-    it "requires a unit that matches the question's unit" do
-      answer.unit = FactoryBot.build(:unit)
-      expect(answer).to be_invalid
-    end
+    # it "requires a unit that matches the question's unit" do
+    #   answer.unit = FactoryBot.build(:unit)
+    #   expect(answer).to be_invalid
+    # end
   end
 end
