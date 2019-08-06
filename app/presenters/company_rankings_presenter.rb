@@ -2,7 +2,7 @@ class CompanyRankingsPresenter
   attr_accessor :company_rankings, :rankable
 
   def initialize(company_rankings)
-    self.company_rankings = company_rankings
+    self.company_rankings = company_rankings.order(:rank)
   end
 
   def as_json(_options = {})
