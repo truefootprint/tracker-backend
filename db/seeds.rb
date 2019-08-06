@@ -129,19 +129,5 @@ esg = Group.create!(name: "ESG")
 GroupMember.create!(group: esg, member: environmental)
 GroupMember.create!(group: esg, member: social)
 
-planet = Group.create!(name: "Planet")
-GroupMember.create!(group: planet, member: greenhouse_revenue)
-
-peace = Group.create!(name: "Peace")
-GroupMember.create!(group: peace, member: environment_incidents)
-
-people = Group.create!(name: "People")
-GroupMember.create!(group: people, member: workplace_fatalities)
-
-five_ps = Group.create!(name: "The Five Ps")
-GroupMember.create!(group: five_ps, member: planet)
-GroupMember.create!(group: five_ps, member: peace)
-GroupMember.create!(group: five_ps, member: people)
-
 OutcomeValue.refresh
 CompanyRanking.refresh
