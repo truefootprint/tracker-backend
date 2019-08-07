@@ -4,24 +4,30 @@ class CompanyRankingsController < ApplicationController
   end
 
   def outcome
-    rankings = company_rankings(Outcome.find(id))
+    outcome = Outcome.find(id)
+    rankings = CompanyRanking.where(rankable: outcome, sector: sector, year: year)
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
   end
 
   def group
-    rankings = company_rankings(Group.find(id))
+    group = Group.find(id)
+    rankings = CompanyRanking.where(rankable: group, sector: sector, year: year)
+    presenter = CompanyRankingsPresenter.new(rankings)
+
+    render json: presenter
+  end
+
+  def company
+    company = Company.find(id)
+    rankings = CompanyRanking.where(company: company, sector: sector, year: year)
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
   end
 
   private
-
-  def company_rankings(rankable)
-    CompanyRanking.where(rankable: rankable, sector: sector, year: year)
-  end
 
   def sector
     Sector.find_by!(name: sector_name)

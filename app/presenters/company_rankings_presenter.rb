@@ -1,39 +1,22 @@
 class CompanyRankingsPresenter
-  attr_accessor :company_rankings, :rankable
+  attr_accessor :scope
 
-  def initialize(company_rankings)
-    self.company_rankings = company_rankings.order(:rank)
+  def initialize(scope)
+    self.scope = scope.order(:rank).includes(:company, :rankable)
   end
 
   def as_json(_options = {})
-    { name: rankable.name, ranked_companies: ranked_companies }
-  end
-
-  private
-
-  def rankable
-    company_rankings.first.rankable
-  end
-
-  def ranked_companies
-    companies.zip(values, ranks, bands).map { |arr| arr.inject(:merge) }
-  end
-
-  def companies
-    company_rankings.map { |c| CompanyPresenter.new(c.company).as_json }
-  end
-
-  def values
-    company_rankings.map { |c| { value: c.value } }
-  end
-
-  def ranks
-    company_rankings.map { |c| { rank: c.rank } }
-  end
-
-  def bands
-    company_rankings.map do |company|
-      { band: Banding.new.band(company.rank, company_rankings.count) }
+    scope.map do |r|
+      {
+        company_name: r.company.name,
+        rankable_type: r.rankable_type,
+        rankable_id: r.rankable_id,
+        rankable_name: r.rankable.name,
+        value: r.value,
+        rank: r.rank,
+        out_of: r.out_of,
+        band: Banding.new.band(r.rank, r.out_of),
+      }
     end
   end
 end
