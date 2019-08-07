@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :company_rankings, only: :show,
-    constraints: { id: CompanyRankingsController::ID_FORMAT }
+  get "company_rankings/:sector/:year/outcome/:id", to: "company_rankings#outcome"
+  get "company_rankings/:sector/:year/group/:id", to: "company_rankings#group"
 
   get "ancestry/:type/:id", to: "ancestry#show"
   get "parents/:type/:id", to: "ancestry#parents"
