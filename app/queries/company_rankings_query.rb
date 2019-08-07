@@ -4,15 +4,21 @@ class CompanyRankingsQuery
   end
 
   def to_sql
+    thresholded = "cast(count as float) / size < 0.5"
+
     <<~SQL
       with recursive r(rankable_type, rankable_id, company_id, sector_id, year, value, count, rank) as (
         select 'Outcome', o.id, c.id, c.sector_id, y, value,
           case when ov is null then cast(0 as bigint) else cast(1 as bigint) end,
 
           case when ov is null then null else rank() over(
-            partition by outcome_id, sector_id, year
+            partition by o.id, c.sector_id, y
             order by case when o.higher_is_better then -value else value end
-          ) end
+          ) end,
+
+          count(case when ov is null then null else 1 end) over(
+            partition by o.id, c.sector_id, y
+          ) as out_of
 
         from outcomes o
         cross join companies c
@@ -25,10 +31,14 @@ class CompanyRankingsQuery
         union all
 
         select 'Group', group_id, company_id, sector_id, year, avg_rank, count,
-          case when cast(count as float) / size < 0.5 then null else rank() over(
+          case when #{thresholded} then null else rank() over(
             partition by group_id, sector_id, year
-            order by case when cast(count as float) / size < 0.5 then null else avg_rank end
-          ) end
+            order by case when #{thresholded} then null else avg_rank end
+          ) end,
+
+          count(case when #{thresholded} then null else 1 end) over(
+            partition by group_id, sector_id, year
+          ) as out_of
 
         from (
           select distinct group_id, company_id, sector_id, year,

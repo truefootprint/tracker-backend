@@ -81,6 +81,13 @@ RSpec.describe CompanyRankingsQuery do
       expect(third_answer.fetch(:rank)).to eq(1)
     end
 
+    it "sets out_of to the number of companies ranked for the outcome" do
+      expect(first_answer.fetch(:out_of)).to eq(2)
+      expect(second_answer.fetch(:out_of)).to eq(2)
+
+      expect(third_answer.fetch(:out_of)).to eq(1)
+    end
+
     context "when higher_is_better is true" do
       before { outcome_1.update!(higher_is_better: true) }
 
@@ -117,6 +124,10 @@ RSpec.describe CompanyRankingsQuery do
 
     it "sets the rank to nil" do
       expect(nil_answer.fetch(:rank)).to be_nil
+    end
+
+    it "sets out_of to the number of companies ranked for the outcome" do
+      expect(nil_answer.fetch(:out_of)).to eq(1)
     end
   end
 end
