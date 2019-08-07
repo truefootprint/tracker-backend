@@ -1,5 +1,6 @@
 class Banding
   def band(rank, count)
+    return unless rank
     percent = rank.to_f / count * 100
 
     if percent < 20
