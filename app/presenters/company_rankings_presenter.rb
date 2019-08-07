@@ -9,6 +9,7 @@ class CompanyRankingsPresenter
     scope.map do |r|
       {
         company_name: r.company.name,
+        company_logo: r.company.logo,
         rankable_type: r.rankable_type,
         rankable_id: r.rankable_id,
         rankable_name: r.rankable.name,

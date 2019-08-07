@@ -13,8 +13,8 @@ class Importer
     mining = Sector.create!(name: sector_name)
     auditing = Sector.create(name: "Auditing")
 
-    company_names.each do |name|
-      Company.create!(name: name, sector: mining)
+    company_names.zip(company_logos).each do |name, logo|
+      Company.create!(name: name, sector: mining, logo: logo)
     end
 
     auditor_names.each do |name|
@@ -106,6 +106,10 @@ class Importer
 
   def company_names
     rows.first[7..]
+  end
+
+  def company_logos
+    rows[69][7..].map(&:presence)
   end
 
   def auditor_keys
