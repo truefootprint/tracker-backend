@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_07_111610) do
+ActiveRecord::Schema.define(version: 2019_08_12_091521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,14 +21,14 @@ ActiveRecord::Schema.define(version: 2019_08_07_111610) do
     t.integer "year"
     t.float "value"
     t.bigint "unit_id"
-    t.bigint "verifier_id"
+    t.bigint "auditor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["auditor_id"], name: "index_answers_on_auditor_id"
     t.index ["company_id"], name: "index_answers_on_company_id"
     t.index ["question_id", "company_id", "year"], name: "index_answers_on_question_id_and_company_id_and_year", unique: true
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["unit_id"], name: "index_answers_on_unit_id"
-    t.index ["verifier_id"], name: "index_answers_on_verifier_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(version: 2019_08_07_111610) do
     t.bigint "unit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "auditor_id"
+    t.index ["auditor_id"], name: "index_outcomes_on_auditor_id"
     t.index ["name"], name: "index_outcomes_on_name", unique: true
     t.index ["unit_id"], name: "index_outcomes_on_unit_id"
   end

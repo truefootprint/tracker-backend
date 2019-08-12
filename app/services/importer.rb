@@ -76,7 +76,7 @@ class Importer
             company: company,
             unit: unit,
             year: year,
-            verifier: auditor,
+            auditor: auditor,
           )
         end
       end

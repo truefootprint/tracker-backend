@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :company
-  belongs_to :verifier, class_name: :Company, optional: true
+  belongs_to :auditor, class_name: :Company, optional: true
   belongs_to :unit
 
   validates :year, presence: true, inclusion: 1950..2050

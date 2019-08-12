@@ -9,7 +9,13 @@ class OutcomeValuesQuery
         o.id as outcome_id,
         c1.id as company_id,
         a1.year,
-        a1.value / coalesce(a2.value, 1) as value
+        a1.value / coalesce(a2.value, 1) as value,
+
+        case when a2 is null then a1.auditor_id else
+          case when a1.auditor_id is not null and a2.auditor_id is not null
+          then a1.auditor_id
+          else null end
+        end as auditor_id
 
       from outcomes o
       join mappings m on m.outcome_id = o.id

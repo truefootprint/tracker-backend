@@ -2,7 +2,7 @@ class CompanyRankingsPresenter
   attr_accessor :scope
 
   def initialize(scope)
-    self.scope = scope.order(:rank).includes(:company, :rankable)
+    self.scope = scope.order(:rank).includes(:company, :rankable, :auditor)
   end
 
   def as_json(_options = {})
@@ -15,6 +15,9 @@ class CompanyRankingsPresenter
         rankable_type: r.rankable_type,
         rankable_id: r.rankable_id,
         rankable_name: r.rankable.name,
+
+        auditor_id: r.auditor_id,
+        auditor_name: r.auditor&.name,
 
         value: r.value,
         rank: r.rank,

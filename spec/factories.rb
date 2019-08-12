@@ -50,4 +50,15 @@ FactoryBot.define do
     group
     association :member, factory: :outcome
   end
+
+  factory :outcome_value do
+    outcome
+    company
+  end
+
+  factory :company_ranking do
+    association :rankable, factory: :outcome
+    company
+    sector
+  end
 end

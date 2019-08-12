@@ -7,7 +7,7 @@ class CreateAnswers < ActiveRecord::Migration[5.2]
 
       t.float :value
       t.belongs_to :unit
-      t.belongs_to :verifier
+      t.belongs_to :auditor
 
       t.timestamps
     end

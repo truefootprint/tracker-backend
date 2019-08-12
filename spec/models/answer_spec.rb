@@ -2,11 +2,11 @@ RSpec.describe Answer do
   describe "associations" do
     subject(:answer) { FactoryBot.build(:answer) }
 
-    it "can optionally belong to a verifier company" do
-      expect(answer.verifier).to be_nil
+    it "can optionally belong to a auditor" do
+      expect(answer.auditor).to be_nil
       expect(answer).to be_valid
 
-      answer.verifier = FactoryBot.build(:company, name: "PwC")
+      answer.auditor = FactoryBot.build(:company, name: "PwC")
       expect(answer).to be_valid
     end
   end

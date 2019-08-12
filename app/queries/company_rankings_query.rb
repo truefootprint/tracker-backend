@@ -7,8 +7,8 @@ class CompanyRankingsQuery
     thresholded = "cast(count as float) / size < 0.5"
 
     <<~SQL
-      with recursive r(rankable_type, rankable_id, company_id, sector_id, year, value, count, rank) as (
-        select 'Outcome', o.id, c.id, c.sector_id, y, value,
+      with recursive r(rankable_type, rankable_id, company_id, sector_id, year, value, auditor_id, count, rank) as (
+        select 'Outcome', o.id, c.id, c.sector_id, y, value, ov.auditor_id,
           case when ov is null then cast(0 as bigint) else cast(1 as bigint) end,
 
           case when ov is null then null else rank() over(
@@ -30,7 +30,7 @@ class CompanyRankingsQuery
 
         union all
 
-        select 'Group', group_id, company_id, sector_id, year, avg_rank, count,
+        select 'Group', group_id, company_id, sector_id, year, avg_rank, null, count,
           case when #{thresholded} then null else rank() over(
             partition by group_id, sector_id, year
             order by case when #{thresholded} then null else avg_rank end
