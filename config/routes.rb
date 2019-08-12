@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   get "ancestors/:type/:id", to: "ancestry#ancestors"
   get "children/:type/:id", to: "ancestry#children"
   get "descendents/:type/:id", to: "ancestry#descendents"
+
+  resources :companies, only: :show
 end
