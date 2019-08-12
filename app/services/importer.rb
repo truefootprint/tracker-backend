@@ -17,13 +17,13 @@ class Importer
       Company.create!(name: name, sector: mining, logo: logo)
     end
 
-    auditor_names.each do |name|
-      Company.create!(name: name, sector: auditing)
+    auditor_names.zip(auditor_logos).each do |name, logo|
+      Company.create!(name: name, logo: logo, sector: auditing)
     end
 
     esg = Group.create(name: "ESG")
 
-    groups = esg_names.uniq.map do |name|
+    esg_names.uniq.map do |name|
       next if name == "-"
 
       group = Group.create!(name: name)
@@ -118,6 +118,10 @@ class Importer
 
   def auditor_names
     cols[2][70..].take_while(&:present?)
+  end
+
+  def auditor_logos
+    cols[4][70..].take_while(&:present?)
   end
 
   def ratio_mappings
