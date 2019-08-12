@@ -18,10 +18,5 @@ RSpec.describe Outcome do
       outcome.higher_is_better = false
       expect(outcome).to be_valid
     end
-
-    it "requires a unit" do
-      outcome.unit = nil
-      expect(outcome).to be_invalid
-    end
   end
 end

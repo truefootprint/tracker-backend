@@ -66,11 +66,6 @@ RSpec.describe Answer do
       expect(answer).to be_valid
     end
 
-    it "requires a unit" do
-      answer.unit = nil
-      expect(answer).to be_invalid
-    end
-
     # TODO: make this more flexible so we can convert between units
     # it "requires a unit that matches the question's unit" do
     #   answer.unit = FactoryBot.build(:unit)

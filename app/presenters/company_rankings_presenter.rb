@@ -2,7 +2,8 @@ class CompanyRankingsPresenter
   attr_accessor :scope
 
   def initialize(scope)
-    self.scope = scope.order(:rank).includes(:company, :rankable, :auditor)
+    self.scope = scope.order(:rank)
+      .includes(:company, :rankable, :auditor)
   end
 
   def as_json(_options = {})
@@ -20,10 +21,18 @@ class CompanyRankingsPresenter
         auditor_name: r.auditor&.name,
 
         value: r.value,
+        unit_name: unit_name(r),
+
         rank: r.rank,
         out_of: r.out_of,
         band: Banding.new.band(r.rank, r.out_of),
       }
     end
+  end
+
+  private
+
+  def unit_name(ranking)
+    ranking.rankable.unit&.name if ranking.rankable.is_a?(Outcome)
   end
 end

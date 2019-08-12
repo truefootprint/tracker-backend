@@ -1,5 +1,5 @@
 class Outcome < ApplicationRecord
-  belongs_to :unit
+  belongs_to :unit, optional: true
 
   validates :name,
     presence: true,

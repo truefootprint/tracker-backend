@@ -33,7 +33,7 @@ class Importer
     question_texts.zip(ratio_mappings, esg_names, gri_codes, unit_names, higher_is_better)
       .each do |text, ratio, esg_name, code, name, higher|
 
-      unit = Unit.find_or_create_by!(name: name)
+      unit = Unit.find_or_create_by!(name: name) if name.present?
       group = Group.find_by!(name: esg_name) unless esg_name == "-"
 
       if ratio
@@ -143,7 +143,7 @@ class Importer
   end
 
   def unit_names
-    cols[5][4..].take_while(&:present?)
+    cols[5][4..65]
   end
 
   def higher_is_better

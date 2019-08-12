@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  belongs_to :unit
+  belongs_to :unit, optional: true
 
   validates :text,
     presence: true,

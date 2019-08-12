@@ -17,10 +17,5 @@ RSpec.describe Question do
       question.text = "total water use?"
       expect(question).to be_invalid
     end
-
-    it "require a unit" do
-      question.unit = nil
-      expect(question).to be_invalid
-    end
   end
 end
