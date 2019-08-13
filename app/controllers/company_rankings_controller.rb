@@ -5,7 +5,7 @@ class CompanyRankingsController < ApplicationController
 
   def outcome
     outcome = Outcome.find(id)
-    rankings = CompanyRanking.where(rankable: outcome, sector: sector, year: year)
+    rankings = CompanyRanking.where(rankable: outcome, sector: sector, year: year).order(:rank)
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
@@ -13,7 +13,7 @@ class CompanyRankingsController < ApplicationController
 
   def group
     group = Group.find(id)
-    rankings = CompanyRanking.where(rankable: group, sector: sector, year: year)
+    rankings = CompanyRanking.where(rankable: group, sector: sector, year: year).order(:rank)
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
@@ -21,7 +21,20 @@ class CompanyRankingsController < ApplicationController
 
   def company
     company = Company.find(id)
-    rankings = CompanyRanking.where(company: company, sector: sector, year: year)
+    rankings = CompanyRanking.where(company: company, sector: sector, year: year).order(:rank)
+    presenter = CompanyRankingsPresenter.new(rankings)
+
+    render json: presenter
+  end
+
+  def trend
+    outcome_id = id[/(\d+)-(\d+)/, 1]
+    company_id = id[/(\d+)-(\d+)/, 2]
+
+    outcome = Outcome.find(outcome_id)
+    company = Company.find(company_id)
+
+    rankings = CompanyRanking.where(rankable: outcome, company: company, sector: sector).order(:year)
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
