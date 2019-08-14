@@ -1,6 +1,22 @@
 class CompanyRankingsController < ApplicationController
+  ID_FORMAT = /(\d+)-(\d+)/
+
   before_action do # TODO: add the rack-cors gem?
     headers['Access-Control-Allow-Origin'] = '*'
+  end
+
+  def show
+    ranking = CompanyRanking.find_by!(
+      rankable_type: "Outcome",
+      rankable_id: rankable_id,
+      sector: sector,
+      year: year,
+      company_id: company_id,
+    )
+
+    presenter = CompanyRankingsPresenter.new([ranking])
+
+    render json: presenter.as_json.first
   end
 
   def outcome
@@ -31,10 +47,7 @@ class CompanyRankingsController < ApplicationController
   end
 
   def trend
-    outcome_id = id[/(\d+)-(\d+)/, 1]
-    company_id = id[/(\d+)-(\d+)/, 2]
-
-    outcome = Outcome.find(outcome_id)
+    outcome = Outcome.find(rankable_id)
     company = Company.find(company_id)
 
     rankings = CompanyRanking.where(rankable: outcome, company: company, sector: sector).order(:year)
@@ -59,5 +72,13 @@ class CompanyRankingsController < ApplicationController
 
   def id
     params.fetch(:id)
+  end
+
+  def rankable_id
+    id[ID_FORMAT, 1]
+  end
+
+  def company_id
+    id[ID_FORMAT, 2]
   end
 end

@@ -2,7 +2,11 @@ class CompanyRankingsPresenter
   attr_accessor :scope
 
   def initialize(scope)
-    self.scope = scope.includes(:company, :rankable, :auditor)
+    if scope.respond_to?(:includes)
+      self.scope = scope.includes(:company, :rankable, :auditor)
+    else
+      self.scope = scope
+    end
   end
 
   def as_json(_options = {})
