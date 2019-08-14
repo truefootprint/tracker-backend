@@ -39,6 +39,12 @@ class CompanyRankingsPresenter
   end
 
   def ratio_of(ranking)
-    [ranking.numerator, ranking.denominator].compact
+    return [] unless ranking.respond_to?(:numerator_id)
+    return [] unless ranking.numerator_id
+
+    [
+      { outcome_id: ranking.numerator_id, outcome_name: ranking.numerator_name },
+      { outcome_id: ranking.denominator_id, outcome_name: ranking.denominator_name },
+    ]
   end
 end

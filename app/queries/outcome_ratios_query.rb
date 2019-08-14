@@ -48,6 +48,14 @@ class OutcomeRatiosQuery
   end
 
   def select_numerator_and_denominator(scope)
-    scope.select("*, m2.outcome_id as numerator, m3.outcome_id as denominator")
+    scope.select(<<~SQL)
+      *,
+
+      m2.outcome_id as numerator_id,
+      m3.outcome_id as denominator_id,
+
+      (select name from outcomes where id = m2.outcome_id) as numerator_name,
+      (select name from outcomes where id = m3.outcome_id) as denominator_name
+    SQL
   end
 end
