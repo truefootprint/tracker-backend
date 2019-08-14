@@ -4,7 +4,7 @@ class CompanyRankingsQuery
   end
 
   def to_sql
-    thresholded = "cast(count as float) / size < 0.5"
+    thresholded = "cast(count as float) / size < 0.1"
 
     <<~SQL
       with recursive r(rankable_type, rankable_id, company_id, sector_id, year, value, auditor_id, count, rank) as (

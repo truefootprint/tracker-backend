@@ -26,6 +26,8 @@ class CompanyRankingsPresenter
         rank: r.rank,
         out_of: r.out_of,
         band: Banding.new.band(r.rank, r.out_of),
+
+        ratio_of: ratio_of(r),
       }
     end
   end
@@ -34,5 +36,9 @@ class CompanyRankingsPresenter
 
   def unit_name(ranking)
     ranking.rankable.unit&.name if ranking.rankable.is_a?(Outcome)
+  end
+
+  def ratio_of(ranking)
+    [ranking.numerator, ranking.denominator].compact
   end
 end

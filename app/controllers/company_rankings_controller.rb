@@ -5,8 +5,11 @@ class CompanyRankingsController < ApplicationController
 
   def outcome
     outcome = Outcome.find(id)
+
     rankings = CompanyRanking.where(rankable: outcome, sector: sector, year: year).order(:rank)
-    presenter = CompanyRankingsPresenter.new(rankings)
+    rankings_with_ratio = OutcomeRatiosQuery.new(rankings).scope
+
+    presenter = CompanyRankingsPresenter.new(rankings_with_ratio)
 
     render json: presenter
   end
