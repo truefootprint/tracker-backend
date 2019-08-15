@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_12_091521) do
+ActiveRecord::Schema.define(version: 2019_08_15_143720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(version: 2019_08_12_091521) do
     t.index ["group_id", "member_type", "member_id"], name: "index_group_members_on_group_id_and_member_type_and_member_id", unique: true
     t.index ["group_id"], name: "index_group_members_on_group_id"
     t.index ["member_type", "member_id"], name: "index_group_members_on_member_type_and_member_id"
+  end
+
+  create_table "group_weights", force: :cascade do |t|
+    t.string "name"
+    t.bigint "group_id"
+    t.float "weight"
+    t.index ["group_id"], name: "index_group_weights_on_group_id"
+    t.index ["name"], name: "index_group_weights_on_name"
   end
 
   create_table "groups", force: :cascade do |t|

@@ -61,4 +61,10 @@ FactoryBot.define do
     company
     sector
   end
+
+  factory :group_weight do
+    sequence(:name) { |n| "Group Weight #{n}" }
+    group
+    weight { 0.25 }
+  end
 end

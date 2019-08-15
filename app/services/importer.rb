@@ -83,6 +83,14 @@ class Importer
       end
     end
 
+    GroupWeight.create!(name: "25-25-50", group: Group.find_by!(name: "Environmental"), weight: 0.25)
+    GroupWeight.create!(name: "25-25-50", group: Group.find_by!(name: "Social"), weight: 0.25)
+    GroupWeight.create!(name: "25-25-50", group: Group.find_by!(name: "Governance"), weight: 0.5)
+
+    GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Environmental"), weight: 0.33333333333)
+    GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Social"), weight: 0.33333333333)
+    GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Governance"), weight: 0.33333333333)
+
     OutcomeValue.refresh
     CompanyRanking.refresh
   end
