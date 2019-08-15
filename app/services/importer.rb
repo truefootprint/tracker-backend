@@ -66,6 +66,7 @@ class Importer
 
         answer.split(",").each_slice(2).zip(years) do |(value, auditor_key), year|
           next if value == "-"
+          raise "#{answer.inspect} looks invalid" if value.to_f < 0
 
           auditor_name = auditor_name_for(auditor_key, answer)
           auditor = Company.find_by!(name: auditor_name) if auditor_name
