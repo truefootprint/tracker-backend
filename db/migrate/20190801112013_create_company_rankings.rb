@@ -10,6 +10,7 @@ class CreateCompanyRankings < ActiveRecord::Migration[5.2]
     add_index :company_rankings, :company_id
     add_index :company_rankings, :year
     add_index :company_rankings, :rank
+    add_index :company_rankings, :threshold
   end
 
   def down
@@ -17,6 +18,7 @@ class CreateCompanyRankings < ActiveRecord::Migration[5.2]
     remove_index :company_rankings, :company_id
     remove_index :company_rankings, :year
     remove_index :company_rankings, :rank
+    remove_index :company_rankings, :threshold
 
     execute("drop materialized view company_rankings")
   end
