@@ -31,6 +31,7 @@ class CompanyRankingsPresenter
         out_of: r.out_of,
         band: Banding.new.band(r.rank, r.out_of),
 
+        data_points: r.count,
         ratio_of: ratio_of(r),
       }
     end
