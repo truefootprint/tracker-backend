@@ -10,6 +10,7 @@ class CompanyRankingsController < ApplicationController
       rankable_type: rankable_type,
       rankable_id: rankable_id,
       sector: sector,
+      distribution: distribution,
       threshold: threshold,
       year: year,
       company_id: company_id,
@@ -26,6 +27,7 @@ class CompanyRankingsController < ApplicationController
     rankings = CompanyRanking.where(
       rankable: outcome,
       sector: sector,
+      distribution: distribution,
       threshold: threshold,
       year: year,
     ).order(:rank)
@@ -43,6 +45,7 @@ class CompanyRankingsController < ApplicationController
     rankings = CompanyRanking.where(
       rankable: group,
       sector: sector,
+      distribution: distribution,
       threshold: threshold,
       year: year,
     ).order(:rank)
@@ -58,6 +61,7 @@ class CompanyRankingsController < ApplicationController
     rankings = CompanyRanking.where(
       company: company,
       sector: sector,
+      distribution: distribution,
       threshold: threshold,
       year: year,
     ).order(:rank)
@@ -72,6 +76,7 @@ class CompanyRankingsController < ApplicationController
       rankable: rankable,
       company_id: company_id,
       sector: sector,
+      distribution: distribution,
       threshold: threshold,
     ).order(:year)
 
@@ -88,6 +93,10 @@ class CompanyRankingsController < ApplicationController
 
   def sector_name
     params.fetch(:sector)
+  end
+
+  def distribution
+    params.fetch(:distribution)
   end
 
   def threshold
