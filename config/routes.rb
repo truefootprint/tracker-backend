@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  get "company_rankings/:sector/:year/outcome/:id", to: "company_rankings#outcome"
-  get "company_rankings/:sector/:year/group/:id", to: "company_rankings#group"
-  get "company_rankings/:sector/:year/company/:id", to: "company_rankings#company"
+  get "company_rankings/:sector/:threshold/:year/outcome/:id", to: "company_rankings#outcome"
+  get "company_rankings/:sector/:threshold/:year/group/:id", to: "company_rankings#group"
+  get "company_rankings/:sector/:threshold/:year/company/:id", to: "company_rankings#company"
 
-  get "company_rankings/:sector/all/history/:id", to: "company_rankings#history",
+  get "company_rankings/:sector/:threshold/all/history/:id", to: "company_rankings#history",
     constraints: { id: CompanyRankingsController::ID_FORMAT }
 
-  get "company_rankings/:sector/:year/history/:id", to: "company_rankings#show",
+  get "company_rankings/:sector/:threshold/:year/history/:id", to: "company_rankings#show",
     constraints: { id: CompanyRankingsController::ID_FORMAT }
 
   get "ancestry/:type/:id", to: "ancestry#show"

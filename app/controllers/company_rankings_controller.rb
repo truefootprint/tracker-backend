@@ -10,6 +10,7 @@ class CompanyRankingsController < ApplicationController
       rankable_type: rankable_type,
       rankable_id: rankable_id,
       sector: sector,
+      threshold: threshold,
       year: year,
       company_id: company_id,
     )
@@ -22,7 +23,13 @@ class CompanyRankingsController < ApplicationController
   def outcome
     outcome = Outcome.find(id)
 
-    rankings = CompanyRanking.where(rankable: outcome, sector: sector, year: year).order(:rank)
+    rankings = CompanyRanking.where(
+      rankable: outcome,
+      sector: sector,
+      threshold: threshold,
+      year: year,
+    ).order(:rank)
+
     rankings_with_ratio = OutcomeRatiosQuery.new(rankings).scope
 
     presenter = CompanyRankingsPresenter.new(rankings_with_ratio)
@@ -32,7 +39,14 @@ class CompanyRankingsController < ApplicationController
 
   def group
     group = Group.find(id)
-    rankings = CompanyRanking.where(rankable: group, sector: sector, year: year).order(:rank)
+
+    rankings = CompanyRanking.where(
+      rankable: group,
+      sector: sector,
+      threshold: threshold,
+      year: year,
+    ).order(:rank)
+
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
@@ -40,14 +54,27 @@ class CompanyRankingsController < ApplicationController
 
   def company
     company = Company.find(id)
-    rankings = CompanyRanking.where(company: company, sector: sector, year: year).order(:rank)
+
+    rankings = CompanyRanking.where(
+      company: company,
+      sector: sector,
+      threshold: threshold,
+      year: year,
+    ).order(:rank)
+
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
   end
 
   def history
-    rankings = CompanyRanking.where(rankable: rankable, company_id: company_id, sector: sector).order(:year)
+    rankings = CompanyRanking.where(
+      rankable: rankable,
+      company_id: company_id,
+      sector: sector,
+      threshold: threshold,
+    ).order(:year)
+
     presenter = CompanyRankingsPresenter.new(rankings)
 
     render json: presenter
@@ -61,6 +88,10 @@ class CompanyRankingsController < ApplicationController
 
   def sector_name
     params.fetch(:sector)
+  end
+
+  def threshold
+    params.fetch(:threshold).sub("-", ".")
   end
 
   def year
