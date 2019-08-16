@@ -1,5 +1,5 @@
 {
-  "name": "tracker-v2",
+  "name": "tracker-backend",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
