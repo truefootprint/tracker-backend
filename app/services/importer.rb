@@ -1,5 +1,5 @@
 class Importer
-  API_CREDENTIALS = "api-credentials.json"
+  API_CREDENTIALS = "config/google-sheets.json"
   SPREADSHEET = "mining"
 
   attr_accessor :rows, :cols

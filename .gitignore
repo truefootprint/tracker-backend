@@ -26,4 +26,4 @@
 /public/packs
 /public/packs-test
 
-api-credentials.json
+config/google-sheets.json
