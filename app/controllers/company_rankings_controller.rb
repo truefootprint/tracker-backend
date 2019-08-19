@@ -1,10 +1,6 @@
 class CompanyRankingsController < ApplicationController
   ID_FORMAT = /(outcome|group)-(\d+)-(\d+)/i
 
-  before_action do # TODO: add the rack-cors gem?
-    headers['Access-Control-Allow-Origin'] = '*'
-  end
-
   def show
     ranking = CompanyRanking.find_by!(
       rankable_type: rankable_type,

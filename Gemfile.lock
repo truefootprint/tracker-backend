@@ -113,6 +113,7 @@ GEM
     public_suffix (3.1.1)
     puma (3.12.1)
     rack (2.0.7)
+    rack-cors (1.0.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.3)
@@ -188,10 +189,11 @@ PLATFORMS
 
 DEPENDENCIES
   factory_bot_rails (~> 5.0)
-  google_drive
+  google_drive (~> 3.0)
   pg (>= 0.18, < 2.0)
   pry-rails (~> 0.3)
   puma (~> 3.11)
+  rack-cors (~> 1.0)
   rails (~> 5.2.3)
   rspec-rails (~> 3.8)
 

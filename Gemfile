@@ -5,7 +5,8 @@ ruby "2.6.3"
 gem "rails", "~> 5.2.3"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 3.11"
-gem "google_drive"
+gem "google_drive", "~> 3.0"
+gem "rack-cors", "~> 1.0"
 
 group :development, :test do
   gem "rspec-rails", "~> 3.8"
