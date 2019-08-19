@@ -27,3 +27,4 @@
 /public/packs-test
 
 config/google-sheets.json
+config/basic-auth.json
