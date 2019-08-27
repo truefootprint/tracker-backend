@@ -13,8 +13,9 @@ class Importer
     mining = Sector.create!(name: sector_name)
     auditing = Sector.create(name: "Auditing")
 
-    company_names.zip(company_logos).each do |name, logo|
-      Company.create!(name: name, sector: mining, logo: logo)
+    company_names.zip(company_logos, tag_names).each do |name, logo, names|
+      company = Company.create!(name: name, sector: mining, logo: logo)
+      names.each { |n| Tag.create!(target: company, name: n) }
     end
 
     auditor_names.zip(auditor_logos).each do |name, logo|
@@ -115,6 +116,10 @@ class Importer
 
   def company_names
     rows.first[7..]
+  end
+
+  def tag_names
+    rows[68][7..].map { |s| (s || "").split(",").map(&:strip) }
   end
 
   def company_logos
