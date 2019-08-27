@@ -67,4 +67,9 @@ FactoryBot.define do
     group
     weight { 0.25 }
   end
+
+  factory :tag do
+    association :target, factory: :company
+    sequence(:name) { |n| "Tag #{n}" }
+  end
 end
