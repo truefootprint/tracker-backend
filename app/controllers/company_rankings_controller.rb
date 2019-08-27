@@ -26,6 +26,7 @@ class CompanyRankingsController < ApplicationController
       distribution: distribution,
       threshold: threshold,
       year: year,
+      company_id: tagged_company_ids,
     ).order(:rank)
 
     rankings_with_ratio = OutcomeRatiosQuery.new(rankings).scope
@@ -44,6 +45,7 @@ class CompanyRankingsController < ApplicationController
       distribution: distribution,
       threshold: threshold,
       year: year,
+      company_id: tagged_company_ids,
     ).order(:rank)
 
     presenter = CompanyRankingsPresenter.new(rankings)
@@ -105,6 +107,22 @@ class CompanyRankingsController < ApplicationController
 
   def id
     params.fetch(:id)
+  end
+
+  def tagged_company_ids
+    if tag_names.any?
+      tags.where(target_type: "Company").pluck(:target_id)
+    else
+      Company.all.pluck(:id)
+    end
+  end
+
+  def tags
+    Tag.where(name: tag_names)
+  end
+
+  def tag_names
+    params.fetch(:tags, "").split(",")
   end
 
   def rankable
