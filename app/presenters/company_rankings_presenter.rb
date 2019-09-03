@@ -33,6 +33,9 @@ class CompanyRankingsPresenter
 
         data_points: r.count,
         ratio_of: ratio_of(r),
+
+        url: r.respond_to?(:url) ? r.url : nil,
+        page: r.respond_to?(:page) ? r.page : nil,
       }
     end
   end

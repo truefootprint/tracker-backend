@@ -30,8 +30,9 @@ class CompanyRankingsController < ApplicationController
     ).order(:rank)
 
     rankings_with_ratio = OutcomeRatiosQuery.new(rankings).scope
+    rankings_with_refs = PageReferencesQuery.new(rankings_with_ratio).scope
 
-    presenter = CompanyRankingsPresenter.new(rankings_with_ratio)
+    presenter = CompanyRankingsPresenter.new(rankings_with_refs)
 
     render json: presenter
   end
