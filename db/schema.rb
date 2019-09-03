@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_27_110444) do
+ActiveRecord::Schema.define(version: 2019_09_03_143431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,15 @@ ActiveRecord::Schema.define(version: 2019_08_27_110444) do
     t.index ["auditor_id"], name: "index_outcomes_on_auditor_id"
     t.index ["name"], name: "index_outcomes_on_name", unique: true
     t.index ["unit_id"], name: "index_outcomes_on_unit_id"
+  end
+
+  create_table "page_references", force: :cascade do |t|
+    t.bigint "answer_id"
+    t.text "url"
+    t.integer "page"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_page_references_on_answer_id"
   end
 
   create_table "questions", force: :cascade do |t|
