@@ -79,7 +79,8 @@ class CompanyRankingsController < ApplicationController
       threshold: threshold,
     ).order(:year)
 
-    presenter = CompanyRankingsPresenter.new(rankings)
+    rankings_with_refs = PageReferencesQuery.new(rankings).scope
+    presenter = CompanyRankingsPresenter.new(rankings_with_refs)
 
     render json: presenter
   end
