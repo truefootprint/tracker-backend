@@ -91,6 +91,7 @@ class CompanyRankingsController < ApplicationController
       sector: sector,
       distribution: distribution,
       threshold: threshold,
+      company_id: tagged_company_ids,
     ).where.not(
       company_id: company_id,
     )
