@@ -85,6 +85,21 @@ class CompanyRankingsController < ApplicationController
     render json: presenter
   end
 
+  def compare
+    rankings = CompanyRanking.where(
+      rankable: rankable,
+      sector: sector,
+      distribution: distribution,
+      threshold: threshold,
+    ).where.not(
+      company_id: company_id,
+    )
+
+    presenter = CompanyRankingsPresenter.new(rankings)
+
+    render json: presenter
+  end
+
   private
 
   def sector
