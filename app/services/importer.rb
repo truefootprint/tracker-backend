@@ -1,41 +1,48 @@
 class Importer
   API_CREDENTIALS = "config/google-sheets.json"
-  SPREADSHEET = "mining"
+  BLANK = "_"
 
-  attr_accessor :rows, :cols
+  attr_accessor :sector_name, :rows, :cols
 
-  def initialize
+  def initialize(sector_name)
+    self.sector_name = sector_name
     self.rows = worksheet.rows
     self.cols = rows.transpose
   end
 
+  def self.run
+    new("mining").run
+    new("fashion").run
+  end
+
   def run
-    mining = Sector.create!(name: sector_name)
+    sector = Sector.create!(name: sector_name.capitalize)
     auditing = Sector.create(name: "Auditing")
 
     company_names.zip(company_logos, tag_names).each do |name, logo, names|
-      company = Company.create!(name: name, sector: mining, logo: logo)
+      company = Company.create!(name: name, sector: sector, logo: logo)
       names.each { |n| Tag.create!(target: company, name: n) }
     end
 
     auditor_names.zip(auditor_logos).each do |name, logo|
+      next if Company.exists?(name: name)
       Company.create!(name: name, logo: logo, sector: auditing)
     end
 
-    esg = Group.create(name: "ESG")
+    esg = Group.find_or_create_by!(name: "ESG")
 
     esg_names.uniq.map do |name|
-      next if name == "-"
+      next if name == BLANK
 
-      group = Group.create!(name: name)
-      GroupMember.create(group: esg, member: group)
+      group = Group.find_or_create_by!(name: name)
+      GroupMember.find_or_create_by!(group: esg, member: group)
     end
 
     question_texts.zip(ratio_mappings, esg_names, gri_codes, unit_names, higher_is_better)
       .each do |text, ratio, esg_name, code, name, higher|
 
       unit = Unit.find_or_create_by!(name: name) if name.present?
-      group = Group.find_by!(name: esg_name) unless esg_name == "-"
+      group = Group.find_by!(name: esg_name) unless esg_name == BLANK
 
       if ratio
         question_text, divisor_text = ratio
@@ -43,14 +50,14 @@ class Importer
         question = Question.find_by!(text: question_text)
         divisor = Question.find_by!(text: divisor_text)
       else
-        question = Question.create!(text: text, unit: unit)
+        question = Question.find_or_create_by!(text: text, unit: unit)
         divisor = nil
       end
 
-      outcome = Outcome.create!(name: text, unit: unit, higher_is_better: higher)
+      outcome = Outcome.find_or_create_by!(name: text, unit: unit, higher_is_better: higher)
 
-      Mapping.create!(question: question, divisor: divisor, outcome: outcome)
-      GroupMember.create!(group: group, member: outcome) if group
+      Mapping.find_or_create_by!(question: question, divisor: divisor, outcome: outcome)
+      GroupMember.find_or_create_by!(group: group, member: outcome) if group
 
       if code.present?
         code = code.split(",").first
@@ -59,15 +66,14 @@ class Importer
         #Identifier.create(name: "gri_code", value: code, target: outcome)
       end
 
-      mining.companies.each do |company|
+      sector.companies.each do |company|
         next if ratio
 
         answer = answer_for(company.name, question.text)
         next if answer.blank?
 
         answer.split(",").each_slice(2).zip(years) do |(value, auditor_key), year|
-          next if value == "-"
-          raise "#{answer.inspect} looks invalid" if value.to_f < 0
+          next if value == BLANK
 
           auditor_name = auditor_name_for(auditor_key, answer)
           auditor = Company.find_by!(name: auditor_name) if auditor_name
@@ -92,7 +98,7 @@ class Importer
     GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Social"), weight: 0.33333333333)
     GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Governance"), weight: 0.33333333333)
 
-    PageReference.seed
+    PageReference.seed if sector_name == "mining"
 
     OutcomeValue.refresh
     CompanyRanking.refresh
@@ -103,7 +109,7 @@ class Importer
   def auditor_name_for(auditor_key, answer)
     auditor_key&.strip!
 
-    return if auditor_key.blank? || auditor_key == "-"
+    return if auditor_key.blank? || auditor_key == BLANK
     index = auditor_keys.index(auditor_key)
 
     auditor_names[index]
@@ -125,19 +131,23 @@ class Importer
   end
 
   def company_logos
-    rows[69][7..].map(&:presence)
+    rows[auditor_start - 1][7..].map(&:presence)
   end
 
   def auditor_keys
-    cols[1][70..].take_while(&:present?)
+    cols[1][auditor_start..].take_while(&:present?)
   end
 
   def auditor_names
-    cols[2][70..].take_while(&:present?)
+    cols[2][auditor_start..].take_while(&:present?)
   end
 
   def auditor_logos
-    cols[4][70..].take_while(&:present?)
+    cols[4][auditor_start..].take_while(&:present?)
+  end
+
+  def auditor_start
+    { "mining" => 70, "fashion" => 64 }.fetch(sector_name)
   end
 
   def ratio_mappings
@@ -166,16 +176,12 @@ class Importer
     cols[6][4..].take_while(&:present?).map { |v| v == "y" }
   end
 
-  def sector_name
-    SPREADSHEET.capitalize
-  end
-
   def years
     (2000..2018).reverse_each
   end
 
   def worksheet
-    session.spreadsheet_by_title(SPREADSHEET).worksheets.first
+    session.spreadsheet_by_title(sector_name).worksheets.first
   end
 
   def session

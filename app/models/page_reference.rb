@@ -2,7 +2,7 @@ class PageReference < ApplicationRecord
   belongs_to :answer
 
   def self.seed
-    company = Company.find_by!(name: "Gold Fields")
+    company = Company.find_by(name: "Gold Fields")
     url = "https://www.goldfields.com/pdf/investors/integrated-annual-reports/2018/iar-2018.pdf"
 
     references = [
