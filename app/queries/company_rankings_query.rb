@@ -19,6 +19,7 @@ class CompanyRankingsQuery
           ) as out_of
 
         from outcomes o
+        join outcomes_by_sector os on os.sector_id = sector_id and os.outcome_id = o.id
         cross join companies c
         cross join (select distinct year as y from outcome_values) _1
         cross join completeness com
@@ -75,6 +76,12 @@ class CompanyRankingsQuery
                (22, 15), (23, 14), (24, 13), (25, 12), (26, 11), (27, 10), (28, 10),
                (29, 10), (30, 10), (31, 10), (32, 10), (33, 10), (34, 10), (35, 10),
                (36, 10), (37, 10), (38, 10), (39, 10), (40, 10)
+      ),
+      outcomes_by_sector as (
+        select distinct s.id as sector_id, ov.outcome_id from sectors s
+        join companies c on c.sector_id = s.id
+        join outcome_values ov on ov.company_id = c.id
+        order by s.id
       )
       select * from r
     SQL
