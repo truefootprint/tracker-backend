@@ -98,7 +98,7 @@ class Importer
     GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Social"), weight: 0.33333333333)
     GroupWeight.create!(name: "33-33-33", group: Group.find_by!(name: "Governance"), weight: 0.33333333333)
 
-    PageReference.seed if sector_name == "mining"
+    PageReference.seed(sector_name)
 
     OutcomeValue.refresh
     CompanyRanking.refresh
