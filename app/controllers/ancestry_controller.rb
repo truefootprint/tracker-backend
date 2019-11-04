@@ -24,13 +24,17 @@ class AncestryController < ApplicationController
   private
 
   def ancestry
-    Ancestry.new(member)
+    Ancestry.new(member, sector)
   end
 
   def member
     raise unless TYPES.include?(type)
 
     type.capitalize.constantize.find(id)
+  end
+
+  def sector
+    Sector.find_by!(name: params.fetch(:sector))
   end
 
   def type

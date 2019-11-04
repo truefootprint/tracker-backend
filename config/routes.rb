@@ -12,11 +12,11 @@ Rails.application.routes.draw do
   get "company_rankings/:sector/:distribution/:threshold/all/compare/:id", to: "company_rankings#compare",
     constraints: { id: CompanyRankingsController::ID_FORMAT }
 
-  get "ancestry/:type/:id", to: "ancestry#show"
-  get "parents/:type/:id", to: "ancestry#parents"
-  get "ancestors/:type/:id", to: "ancestry#ancestors"
-  get "children/:type/:id", to: "ancestry#children"
-  get "descendents/:type/:id", to: "ancestry#descendents"
+  get "ancestry/:sector/:type/:id", to: "ancestry#show"
+  get "parents/:sector/:type/:id", to: "ancestry#parents"
+  get "ancestors/:sector/:type/:id", to: "ancestry#ancestors"
+  get "children/:sector/:type/:id", to: "ancestry#children"
+  get "descendents/:sector/:type/:id", to: "ancestry#descendents"
 
   resources :companies, only: :show
 end

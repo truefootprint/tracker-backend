@@ -1,8 +1,9 @@
 class Ancestry
-  attr_accessor :member, :seen
+  attr_accessor :member, :sector, :seen
 
-  def initialize(member)
+  def initialize(member, sector)
     self.member = member
+    self.sector = sector
     self.seen = Set[member_key]
   end
 
@@ -44,7 +45,7 @@ class Ancestry
 
   def parent_to_children
     @parent_to_children ||= (
-      results = DescendentsQuery.new(member).execute
+      results = DescendentsQuery.new(member, sector).execute
       array_default = Hash.new { |k, v| k[v] = [] }
 
       results.each.with_object(array_default) do |result, children|
