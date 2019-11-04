@@ -78,10 +78,7 @@ class CompanyRankingsQuery
                (36, 10), (37, 10), (38, 10), (39, 10), (40, 10)
       ),
       outcomes_by_sector as (
-        select distinct s.id as sector_id, ov.outcome_id from sectors s
-        join companies c on c.sector_id = s.id
-        join outcome_values ov on ov.company_id = c.id
-        order by s.id
+        select * from outcome_sectors order by sector_id
       )
       select * from r
     SQL
