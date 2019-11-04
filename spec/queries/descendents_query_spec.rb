@@ -40,4 +40,21 @@ RSpec.describe DescendentsQuery do
     query = described_class.new(matches_group_id)
     expect(query.execute).to be_empty
   end
+
+  it "can optionally filter outcomes to a sector" do
+    sector = FactoryBot.create(:outcome_sector, outcome: grandchild).sector
+    another = FactoryBot.create(:sector)
+
+    query = described_class.new(group, sector)
+    expect(query.execute).to include(
+      { parent_type: "Group", parent_id: child1.id, child_type: "Outcome", child_id: grandchild.id },
+      { parent_type: "Group", parent_id: child2.id, child_type: "Outcome", child_id: grandchild.id },
+    )
+
+    query = described_class.new(group, another)
+    expect(query.execute).not_to include(
+      { parent_type: "Group", parent_id: child1.id, child_type: "Outcome", child_id: grandchild.id },
+      { parent_type: "Group", parent_id: child2.id, child_type: "Outcome", child_id: grandchild.id },
+    )
+  end
 end

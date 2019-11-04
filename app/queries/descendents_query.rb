@@ -1,14 +1,17 @@
 class DescendentsQuery
-  attr_accessor :group
+  attr_accessor :group, :sector
 
-  def initialize(group)
+  def initialize(group, sector = nil)
     self.group = group
+    self.sector = sector
   end
 
   def execute
     return [] unless group.is_a?(Group)
 
-    ActiveRecord::Base.connection.execute(to_sql).to_a.map(&:symbolize_keys)
+    filter_by_sector(
+      ActiveRecord::Base.connection.execute(to_sql).to_a.map(&:symbolize_keys)
+    )
   end
 
   def to_sql
@@ -25,5 +28,17 @@ class DescendentsQuery
       )
       select * from x
     SQL
+  end
+
+  private
+
+  def filter_by_sector(results)
+    return results unless sector
+
+    outcome_ids = OutcomeSector.where(sector: sector).pluck(:outcome_id)
+
+    results.delete_if do |r|
+      r.fetch(:child_type) == "Outcome" && outcome_ids.exclude?(r.fetch(:child_id))
+    end
   end
 end
