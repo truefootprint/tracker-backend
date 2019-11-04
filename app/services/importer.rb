@@ -55,6 +55,7 @@ class Importer
       end
 
       outcome = Outcome.find_or_create_by!(name: text, unit: unit, higher_is_better: higher)
+      OutcomeSector.create!(outcome: outcome, sector: sector)
 
       Mapping.find_or_create_by!(question: question, divisor: divisor, outcome: outcome)
       GroupMember.find_or_create_by!(group: group, member: outcome) if group
