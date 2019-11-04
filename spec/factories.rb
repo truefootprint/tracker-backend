@@ -56,6 +56,11 @@ FactoryBot.define do
     company
   end
 
+  factory :outcome_sector do
+    outcome
+    sector
+  end
+
   factory :company_ranking do
     association :rankable, factory: :outcome
     company

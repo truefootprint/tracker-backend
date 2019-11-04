@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_03_143431) do
+ActiveRecord::Schema.define(version: 2019_11_04_095351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,15 @@ ActiveRecord::Schema.define(version: 2019_09_03_143431) do
     t.index ["divisor_id"], name: "index_mappings_on_divisor_id"
     t.index ["outcome_id"], name: "index_mappings_on_outcome_id", unique: true
     t.index ["question_id"], name: "index_mappings_on_question_id"
+  end
+
+  create_table "outcome_sectors", force: :cascade do |t|
+    t.bigint "outcome_id"
+    t.bigint "sector_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["outcome_id"], name: "index_outcome_sectors_on_outcome_id"
+    t.index ["sector_id"], name: "index_outcome_sectors_on_sector_id"
   end
 
   create_table "outcomes", force: :cascade do |t|
