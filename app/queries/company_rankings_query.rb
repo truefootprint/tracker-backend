@@ -20,7 +20,7 @@ class CompanyRankingsQuery
 
         from outcomes o
         join outcomes_by_sector os on os.sector_id = sector_id and os.outcome_id = o.id
-        cross join companies c
+        join companies c on c.sector_id = os.sector_id
         cross join (select distinct year as y from outcome_values) _1
         cross join completeness com
         cross join (select distinct name as distribution from group_weights) _2
