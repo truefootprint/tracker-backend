@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-  http_basic_authenticate_with(
-    name: BasicAuth.username,
-    password: BasicAuth.password,
-  )
+  # http_basic_authenticate_with(
+  #   name: BasicAuth.username,
+  #   password: BasicAuth.password,
+  # )
 end
