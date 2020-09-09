@@ -11,9 +11,9 @@ class Importer
   end
 
   def self.run
-    new("water").run
     new("mining").run
     new("fashion").run
+    new("water").run    
   end
 
   def run
@@ -149,7 +149,7 @@ class Importer
   end
 
   def auditor_start
-    { "mining" => 70, "fashion" => 64, "water" => 58 }.fetch(sector_name)
+    { "mining" => 70, "fashion" => 64, "water" => 58 }.fetch(sector_name)    
   end
 
   def ratio_mappings
